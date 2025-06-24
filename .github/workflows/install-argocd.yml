@@ -1,4 +1,4 @@
-iname: Install Argo CD
+name: Install Argo CD
 
 on:
   workflow_dispatch:
