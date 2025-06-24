@@ -14,7 +14,7 @@ variable "my_ip_cidr" {
 variable "eks_cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
-  default     = "guest-login-app"
+  default     = "guest-login-service"
 }
 
 variable "node_group_instance_type" {

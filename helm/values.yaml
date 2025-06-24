@@ -45,7 +45,7 @@ keda:
         metadata:
           metricName: "http_requests_total"
           threshold: "10"
-          query: "sum(rate(http_requests_total{job='guest-login-service'}[1m]))"
+          query: "sum(rate(http_requests_total{job='guest-login-service}[1m]))"
 
       - type: prometheus
         metadata:

@@ -21,7 +21,7 @@ module "vpc" {
   create_igw                       = true
 
   tags = {
-    Project = "guest-login-app"
+    Project = "guest-login-service"
   }
 }
 
@@ -93,7 +93,7 @@ module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "20.8.4"
 
-  cluster_name    = "guest-login-app"
+  cluster_name    = "guest-login-service"
   cluster_version = "1.29"
   subnet_ids      = module.vpc.public_subnets  # <-- Using public subnets so nodes get public IPs
   vpc_id          = module.vpc.vpc_id
@@ -165,7 +165,7 @@ resource "aws_instance" "github_runner" {
 
   tags = {
     Name    = "github-actions-runner"
-    Project = "guest-login-app"
+    Project = "guest-login-service"
   }
 }
 

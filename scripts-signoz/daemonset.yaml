@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "guest-login-app.fullname" . }}-log-agent
+  name: {{ include "guest-login-service.fullname" . }}-log-agent
   labels:
-    app: {{ include "guest-login-app.name" . }}-log-agent
+    app: {{ include "guest-login-service.name" . }}-log-agent
 spec:
   selector:
     matchLabels:
-      app: {{ include "guest-login-app.name" . }}-log-agent
+      app: {{ include "guest-login-service.name" . }}-log-agent
   template:
     metadata:
       labels:
-        app: {{ include "guest-login-app.name" . }}-log-agent
+        app: {{ include "guest-login-service.name" . }}-log-agent
     spec:
       serviceAccountName: signoz-log-agent
       containers:
