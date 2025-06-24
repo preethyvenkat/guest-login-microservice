@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/preethyvenkat/guest-login-microservice.git
     targetRevision: HEAD
-    path: helm-chart
+    path: helm
     helm:
       valueFiles:
         - values.yaml
