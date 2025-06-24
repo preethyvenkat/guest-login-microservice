@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/preethyvenkat/guest-management-login-microservice.git
+    repoURL: https://github.com/preethyvenkat/guest-login-microservice.git
     targetRevision: HEAD
     path: helm-chart
     helm:
