@@ -1,0 +1,17 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+    # Optional: Enable remoteWrite if needed
+    retention: "2d"
+    resources:
+      requests:
+        memory: "400Mi"
+        cpu: "200m"
+
+grafana:
+  enabled: false
+
+alertmanager:
+  enabled: false

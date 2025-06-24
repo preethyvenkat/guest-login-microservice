@@ -1,0 +1,59 @@
+global:
+  storageClass: gp2
+
+frontend:
+  service:
+    type: LoadBalancer
+
+otelCollector:
+  enabled: true
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+    processors:
+      batch:
+    exporters:
+      clickhouse:
+        endpoint: tcp://clickhouse:9000
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [clickhouse]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [clickhouse]
+
+clickhouse:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 10Gi
+
+k8s-infra:
+  enabled: true
+  agent:
+    mode: daemonset
+    config:
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+            http:
+      exporters:
+        otlp:
+          endpoint: signoz-otel-collector.signoz.svc.cluster.local:4317
+      service:
+        pipelines:
+          traces:
+            receivers: [otlp]
+            exporters: [otlp]
+          metrics:
+            receivers: [otlp]
+            exporters: [otlp]

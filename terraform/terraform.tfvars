@@ -1,0 +1,2 @@
+key_name  = "runner-key"
+my_ip_cidr = "203.0.113.25/32"

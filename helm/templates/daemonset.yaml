@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "guest-login-app.fullname" . }}-node-exporter
+  labels:
+    app: {{ include "guest-login-app.name" . }}-node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "guest-login-app.name" . }}-node-exporter
+  template:
+    metadata:
+      labels:
+        app: {{ include "guest-login-app.name" . }}-node-exporter
+    spec:
+      serviceAccountName: prometheus-node-exporter
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 100Mi
+            cpu: 100m
+          requests:
+            memory: 50Mi
+            cpu: 50m
+        ports:
+        - containerPort: 9100
+          name: metrics
+        volumeMounts:
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+        - name: root
+          mountPath: /rootfs
+          readOnly: true
+      hostNetwork: true
+      hostPID: true
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: root
+        hostPath:
+          path: /

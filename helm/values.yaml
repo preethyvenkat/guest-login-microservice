@@ -1,0 +1,55 @@
+replicaCount: 2
+
+config:
+  logLevel: "info"
+  welcomeMsg: "Welcome to the Amusement Park Guest Login!"
+
+
+image:
+  repository: 141409473062.dkr.ecr.us-east-1.amazonaws.com/guest-login
+  tag: latest
+  pullPolicy: Always
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 250m
+    memory: 128Mi
+
+
+service:
+  type: ClusterIP
+  port: 3000
+
+#hpa---
+#autoscaling:
+ # enabled: true
+ # minReplicas: 2
+ # maxReplicas: 5
+ # targetCPUUtilizationPercentage: 60
+
+
+keda:
+  enabled: true
+  minReplicaCount: 1
+  maxReplicaCount: 5
+  prometheus:
+    # Prometheus server address in your cluster
+    serverAddress: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+
+    # Use multiple triggers, one for http request rate and one for CPU usage
+    triggers:
+      - type: prometheus
+        metadata:
+          metricName: "http_requests_total"
+          threshold: "10"
+          query: "sum(rate(http_requests_total{job='guest-login-app'}[1m]))"
+
+      - type: prometheus
+        metadata:
+          metricName: "cpu_usage_seconds_total"
+          threshold: "0.7"  # 70% CPU usage threshold
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{pod=~"guest-login-app-.*"}[1m]))

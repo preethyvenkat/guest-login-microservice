@@ -1,0 +1,46 @@
+name: Terraform Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: terraform plan -out=tfplan
+
+      - name: Check if EKS cluster exists and is ACTIVE
+        id: check_eks
+        run: |
+          CLUSTER_STATUS=$(aws eks describe-cluster --name guest-login-app --query "cluster.status" --output text || echo "NOT_FOUND")
+          echo "Cluster status: $CLUSTER_STATUS"
+          if [ "$CLUSTER_STATUS" = "ACTIVE" ]; then
+            echo "eks_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "eks_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Terraform Apply
+        if: steps.check_eks.outputs.eks_exists != 'true'
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Skip Terraform Apply
+        if: steps.check_eks.outputs.eks_exists == 'true'
+        run: echo "EKS cluster is already active. Skipping terraform apply."
