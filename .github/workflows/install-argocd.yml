@@ -5,7 +5,7 @@ on:
 
 jobs:
   install-argocd:
-    runs-on: self-hosted
+    runs-on: [self-hosted, dev-runner, ubuntu-22.04]
 
     steps:
       - name: Checkout repo
