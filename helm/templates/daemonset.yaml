@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "guest-login-app.fullname" . }}-node-exporter
+  name: {{ include "guest-login-service.fullname" . }}-node-exporter
   labels:
-    app: {{ include "guest-login-app.name" . }}-node-exporter
+    app: {{ include "guest-login-service.name" . }}-node-exporter
 spec:
   selector:
     matchLabels:
-      app: {{ include "guest-login-app.name" . }}-node-exporter
+      app: {{ include "guest-login-service.name" . }}-node-exporter
   template:
     metadata:
       labels:
-        app: {{ include "guest-login-app.name" . }}-node-exporter
+        app: {{ include "guest-login-service.name" . }}-node-exporter
     spec:
       serviceAccountName: prometheus-node-exporter
       containers:

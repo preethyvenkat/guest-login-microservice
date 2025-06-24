@@ -33,4 +33,4 @@ jobs:
 
       - name: Sync Argo CD Application
         run: |
-          argocd app sync guest-login-app
+          argocd app sync guest-login-service

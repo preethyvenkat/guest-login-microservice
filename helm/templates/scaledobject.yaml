@@ -2,11 +2,11 @@
 #apiVersion: keda.sh/v1alpha1
 #kind: ScaledObject
 #metadata:
- # name: {{ include "guest-login-app.fullname" . }}
+ # name: {{ include "guest-login-service.fullname" . }}
  # namespace: {{ .Release.Namespace }}
 #spec:
  # scaleTargetRef:
-  #  name: guest-login-app
+  #  name: guest-login-service
  # minReplicaCount: {{ .Values.keda.minReplicaCount }}
  # maxReplicaCount: {{ .Values.keda.maxReplicaCount }}
  # triggers:
@@ -23,11 +23,11 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: {{ include "guest-login-app.fullname" . }}
+  name: {{ include "guest-login-service.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   scaleTargetRef:
-    name: {{ include "guest-login-app.fullname" . }}
+    name: {{ include "guest-login-service.fullname" . }}
   minReplicaCount: {{ .Values.keda.minReplicaCount }}
   maxReplicaCount: {{ .Values.keda.maxReplicaCount }}
   triggers:

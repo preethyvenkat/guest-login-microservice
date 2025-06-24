@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: guest-login-app
+  name: guest-login-service
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: guest-login-app
+      app: guest-login-service
   template:
     metadata:
       labels:
-        app: guest-login-app
+        app: guest-login-service
       annotations:
       	prometheus.io/scrape: "true"
       	prometheus.io/path: "/metrics"
       	prometheus.io/port: "3000"
     spec:
       containers:
-      - name: guest-login-app
+      - name: guest-login-service
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: 3000

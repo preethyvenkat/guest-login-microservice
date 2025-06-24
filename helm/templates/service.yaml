@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: guest-login-app
+  name: guest-login-service
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: guest-login-app
+    app: guest-login-service
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 3000

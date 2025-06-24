@@ -29,7 +29,7 @@ jobs:
       - name: Check if EKS cluster exists and is ACTIVE
         id: check_eks
         run: |
-          CLUSTER_STATUS=$(aws eks describe-cluster --name guest-login-app --query "cluster.status" --output text || echo "NOT_FOUND")
+          CLUSTER_STATUS=$(aws eks describe-cluster --name guest-login-service --query "cluster.status" --output text || echo "NOT_FOUND")
           echo "Cluster status: $CLUSTER_STATUS"
           if [ "$CLUSTER_STATUS" = "ACTIVE" ]; then
             echo "eks_exists=true" >> $GITHUB_OUTPUT

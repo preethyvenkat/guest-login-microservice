@@ -45,11 +45,11 @@ keda:
         metadata:
           metricName: "http_requests_total"
           threshold: "10"
-          query: "sum(rate(http_requests_total{job='guest-login-app'}[1m]))"
+          query: "sum(rate(http_requests_total{job='guest-login-service'}[1m]))"
 
       - type: prometheus
         metadata:
           metricName: "cpu_usage_seconds_total"
           threshold: "0.7"  # 70% CPU usage threshold
           query: |
-            sum(rate(container_cpu_usage_seconds_total{pod=~"guest-login-app-.*"}[1m]))
+            sum(rate(container_cpu_usage_seconds_total{pod=~"guest-login-service-.*"}[1m]))
